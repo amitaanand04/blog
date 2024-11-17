@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { getCommentsByPostId } from '../services/api';
+import React, { useEffect } from 'react';
+import { fetchCommentsByPostId } from '../redux/slice/postSlice';
+import { useDispatch,useSelector } from 'react-redux';
 
 const Comments = ({ postId }) => {
-  const [comments, setComments] = useState([]);
+  const dispatch = useDispatch();
+  const {comments} = useSelector((state) =>state.posts)
 
   useEffect(() => {
-    async function fetchComments() {
-      const data = await getCommentsByPostId(postId);
-      setComments(data);
-    }
-    fetchComments();
+   dispatch(fetchCommentsByPostId(postId));
   }, [postId]);
 
   return (

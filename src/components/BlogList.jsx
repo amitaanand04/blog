@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { getPosts } from '../services/api';
 import BlogListItem from './BlogListItem';
 import Loader from './Loader';
+import { useDispatch,useSelector } from 'react-redux';
+import { fetchPosts } from '../redux/slice/postSlice';
 
 const BlogList = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch= useDispatch();
+  const {posts,loading} = useSelector((state)=>state.posts);
 
   useEffect(() => {
-    async function fetchData() {
-      const data = await getPosts();
-      setPosts(data);
-      setLoading(false);
-    }
-    fetchData();
+    dispatch(fetchPosts());
   }, []);
 
   if (loading) return <Loader />;
